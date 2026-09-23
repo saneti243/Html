@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .carrito-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .item-carrito {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--gray-bg);
+        }
+        .total-carrito {
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">■ Tienda67</div>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="productos.html">Productos</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="blogs.html">Blogs</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+        <div class="cart">
+            <a href="carrito.html">🛒 Cart</a>
+        </div>
+        <div class="auth-links">
+            <a href="login.html">Iniciar sesión</a> | 
+            <a href="registro.html">Registrar usuario</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="carrito-container">
+            <h2 style="margin-bottom: 20px;">Tu Carrito de Compras</h2>
+            
+            <div id="lista-carrito">
+                <p style="color: #6c757d;">Tu carrito está vacío actualmente.</p>
+            </div>
+
+            <div class="total-carrito" id="total-carrito">
+                Total: $0
+            </div>
+            
+            <div style="text-align: right; margin-top: 20px;">
+                <button class="btn btn-add" style="width: auto; padding: 10px 30px;" onclick="alert('Funcionalidad de pago en construcción')">Proceder al pago</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const listaCarrito = document.getElementById('lista-carrito');
+            const contenedorTotal = document.getElementById('total-carrito');
+            
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            
+            if (carrito.length > 0) {
+                listaCarrito.innerHTML = ''; 
+                let total = 0;
+
+                carrito.forEach((producto, index) => {
+                    total += producto.precio;
+                    
+                    const div = document.createElement('div');
+                    div.className = 'item-carrito';
+                    div.innerHTML = `
+                        <div>
+                            <strong>${producto.nombre}</strong>
+                            <p style="font-size: 14px; color: gray;">${producto.categoria || 'Sin categoría'}</p>
+                        </div>
+                        <div>$${producto.precio.toLocaleString('es-CL')}</div>
+                    `;
+                    listaCarrito.appendChild(div);
+                });
+
+                contenedorTotal.innerText = `Total: $${total.toLocaleString('es-CL')}`;
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros - Tienda Online</title>
+    <!-- Enlace a la hoja de estilos externa -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .nosotros-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .desarrolladores {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .dev-card {
+            flex: 1;
+            min-width: 250px;
+            background: var(--gray-bg);
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .dev-photo {
+            width: 100px;
+            height: 100px;
+            background: #ced4da;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">■ Tienda67</div>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="productos.html">Productos</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="blogs.html">Blogs</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+        <div class="cart">
+            <a href="carrito.html">🛒 Cart (0)</a>
+        </div>
+        <div class="auth-links">
+            <a href="login.html">Iniciar sesión</a> | 
+            <a href="registro.html">Registrar usuario</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="nosotros-container">
+            <h1 style="color: var(--primary-color); margin-bottom: 20px;">Sobre Nosotros</h1>
+            <p style="margin-bottom: 15px;">
+                Bienvenidos a <strong>Site Name</strong>, tu tienda online de confianza. Nacimos con la misión de ofrecer los mejores productos del mercado a precios accesibles, garantizando siempre la calidad y la satisfacción de nuestros clientes. Nuestra guía de productos está diseñada para ayudarte a identificar exactamente lo que necesitas.
+            </p>
+            <p>
+                Creemos en la innovación constante y en brindar una experiencia de usuario fluida, desde el momento en que navegas por nuestro catálogo hasta que el producto llega a la puerta de tu casa.
+            </p>
+
+            <h2 style="margin-top: 40px; margin-bottom: 20px; border-bottom: 2px solid var(--gray-bg); padding-bottom: 10px;">Nuestro Equipo de Desarrolladores</h2>
+            
+            <div class="desarrolladores">
+                <article class="dev-card">
+                    <div class="dev-photo">Foto</div>
+                    <h3>Desarrollador 1</h3>
+                    <p style="font-size: 14px; color: #555; margin-top: 10px;">Especialista en Frontend y diseño de interfaces (UI/UX). Encargado de la estructura HTML y CSS.</p>
+                </article>
+
+                <article class="dev-card">
+                    <div class="dev-photo">Foto</div>
+                    <h3>Desarrollador 2</h3>
+                    <p style="font-size: 14px; color: #555; margin-top: 10px;">Programador Javascript. Responsable de la lógica del carrito de compras y validaciones de formularios.</p>
+                </article>
+
+                <article class="dev-card">
+                    <div class="dev-photo">Foto</div>
+                    <h3>Desarrollador 3</h3>
+                    <p style="font-size: 14px; color: #555; margin-top: 10px;">Especialista en Backend y bases de datos. Encargado del panel de administración y control de usuarios.</p>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Tienda Online. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>

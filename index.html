@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Online - Home</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">■ Tienda67</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="vista/tienda/productos.html">Productos</a></li>
+                <li><a href="vista/tienda/nosotros.html">Nosotros</a></li>
+                <li><a href="vista/tienda/blogs.html">Blogs</a></li>
+                <li><a href="vista/tienda/contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+        <div class="cart">
+            <a href="vista/tienda/carrito.html">🛒 Cart (0)</a>
+        </div>
+        <div class="auth-links">
+            <a href="vista/tienda/login.html">Iniciar sesión</a> | 
+            <a href="vista/tienda/registro.html">Registrar usuario</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-text">
+                <h1>TIENDA ONLINE</h1>
+                <p>Nuestra guía de productos te brinda los mejores tips para identificar los artículos que necesitas. Descarga nuestro catálogo o revisa las últimas novedades disponibles en stock para entrega inmediata.</p>
+                <a href="vista/tienda/productos.html" class="btn">⬇ ver productos</a>
+            </div>
+            <div class="hero-image-placeholder">
+                <span>[ Imagen representativa de la tienda ]</span>
+            </div>
+        </section>
+
+        <section class="productos-destacados" id="contenedor-productos">
+            
+            <article class="producto-card">
+                <div class="producto-img">[ Imagen ]</div>
+                <h2>Product Title</h2>
+                <p style="font-size: 12px; color: gray;">Attributes</p>
+                <p class="precio">$00.00</p>
+                <button class="btn btn-add">Añadir al carrito</button>
+            </article>
+
+            <article class="producto-card">
+                <div class="producto-img">[ Imagen ]</div>
+                <h2>Product Title</h2>
+                <p style="font-size: 12px; color: gray;">Attributes</p>
+                <p class="precio">$00.00</p>
+                <button class="btn btn-add">Añadir al carrito</button>
+            </article>
+
+            <article class="producto-card">
+                <div class="producto-img">[ Imagen ]</div>
+                <h2>Product Title</h2>
+                <p style="font-size: 12px; color: gray;">Attributes</p>
+                <p class="precio">$00.00</p>
+                <button class="btn btn-add">Añadir al carrito</button>
+            </article>
+
+            <article class="producto-card">
+                <div class="producto-img">[ Imagen ]</div>
+                <h2>Product Title</h2>
+                <p style="font-size: 12px; color: gray;">Attributes</p>
+                <p class="precio">$00.00</p>
+                <button class="btn btn-add">Añadir al carrito</button>
+            </article>
+
+        </section>
+    </main>
+
+    <footer>
+        <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
+            <div style="font-weight: bold; font-size: 18px;">Site Name</div>
+            
+            <div>
+                <a href="#" style="color: white; margin: 0 10px; text-decoration: none;">Category X</a> |
+                <a href="#" style="color: white; margin: 0 10px; text-decoration: none;">Category Y</a> |
+                <a href="#" style="color: white; margin: 0 10px; text-decoration: none;">Category Z</a>
+            </div>
+            
+            <div style="margin-top: 10px;">
+                <p style="margin-bottom: 5px; font-size: 14px;">Stay In Touch! Join our Newsletter</p>
+                <input type="email" placeholder="Enter Email" style="padding: 8px; border: none; border-radius: 4px;">
+                <button class="btn" style="padding: 8px 15px;">Subscribe</button>
+            </div>
+        </div>
+        <p style="margin-top: 20px; font-size: 12px; color: #adb5bd;">&copy; 2026 Tienda Online. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="js/carrito.js"></script>
+
+</body>
+</html>

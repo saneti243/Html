@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Tienda Online</title>
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">■ Tienda67</div>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="productos.html">Productos</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="blogs.html">Blogs</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+        <div class="cart">
+            <a href="carrito.html">🛒 Cart (0)</a>
+        </div>
+        <div class="auth-links">
+            <a href="login.html">Iniciar sesión</a> | 
+            <a href="registro.html">Registrar usuario</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <h2>Contáctanos</h2>
+            <p style="text-align: center; margin-bottom: 20px; font-size: 14px; color: #555;">
+                ¿Tienes alguna duda o sugerencia? Déjanos un mensaje y te responderemos a la brevedad.
+            </p>
+            
+            <form id="form-contacto">
+                <div class="form-group">
+                    <label for="nombre-contacto">NOMBRE COMPLETO</label>
+                    <input type="text" id="nombre-contacto" name="nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="correo-contacto">CORREO ELECTRÓNICO</label>
+                    <input type="email" id="correo-contacto" name="correo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="asunto-contacto">ASUNTO</label>
+                    <input type="text" id="asunto-contacto" name="asunto" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mensaje-contacto">MENSAJE</label>
+                    <textarea id="mensaje-contacto" name="mensaje" rows="5" style="width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px; resize: vertical;" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-add">ENVIAR MENSAJE</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Tienda Online. Todos los derechos reservados.</p>
+    </footer>
+
+
+    <script src="../../js/validaciones.js"></script>
+
+</body>
+</html>

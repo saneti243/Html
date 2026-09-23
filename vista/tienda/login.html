@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión</title>
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">■ Tienda67</div>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="form-container" style="text-align: center;">
+            <div style="width: 150px; height: 100px; background-color: #ced4da; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; border: 2px dashed #adb5bd;">
+                <span>[ Logo ]</span>
+            </div>
+            <h2 style="background: none; text-transform: uppercase;">nombre empresa</h2>
+            
+            <h3 style="background-color: #e9ecef; padding: 10px; margin-bottom: 20px; text-align: left; font-size: 14px;">Inicio de sesión:</h3>
+            
+            <form id="form-login" style="text-align: left;">
+                <div class="form-group">
+                    <label for="login-correo">CORREO</label>
+                    <input type="email" id="login-correo" name="correo" autocomplete="email">
+                    <div id="error-login-correo" class="error-msg"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="login-password">CONTRASEÑA</label>
+                    <input type="password" id="login-password" name="password" autocomplete="current-password">
+                    <div id="error-login-password" class="error-msg"></div>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button type="submit" class="btn">Iniciar sesión</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="../../js/validaciones.js"></script>
+</body>
+</html>

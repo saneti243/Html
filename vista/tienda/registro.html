@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">■ Tienda67</div>
+        <nav>
+            <ul>
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="productos.html">Productos</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="blogs.html">Blogs</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+        <div class="cart"><a href="carrito.html">🛒 Cart (0)</a></div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <h2>Registro de usuario</h2>
+            <form id="form-registro">
+                <div class="form-group">
+                    <label for="nombre">NOMBRE COMPLETO</label>
+                    <input type="text" id="nombre" name="nombre" autocomplete="name">
+                    <div id="error-nombre" class="error-msg"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="correo">CORREO</label>
+                    <input type="email" id="correo" name="correo" autocomplete="email">
+                    <div id="error-correo" class="error-msg"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">CONTRASEÑA</label>
+                    <input type="password" id="password" name="password" autocomplete="new-password">
+                    <div id="error-password" class="error-msg"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">CONFIRMAR CONTRASEÑA</label>
+                    <input type="password" id="confirm-password" name="confirm-password">
+                    <div id="error-confirm" class="error-msg"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">TELÉFONO (opcional)</label>
+                    <input type="tel" id="telefono" name="telefono" autocomplete="tel">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="region">- Seleccione la región -</label>
+                        <select id="region" name="region">
+                            <option value="">Seleccione...</option>
+                            <option value="RM">Región Metropolitana de Santiago</option>
+                            <option value="Araucania">Región de la Araucanía</option>
+                            <option value="Nuble">Región de Ñuble</option>
+                        </select>
+                        <div id="error-region" class="error-msg"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="comuna">- Seleccione la comuna -</label>
+                        <select id="comuna" name="comuna">
+                            <option value="">Seleccione...</option>
+                            <option value="Linares">Linares</option>
+                            <option value="Longavi">Longaví</option>
+                            <option value="Concepcion">Concepción</option>
+                        </select>
+                        <div id="error-comuna" class="error-msg"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-add">REGISTRAR</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Tienda Online. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="../../js/validaciones.js"></script>
+</body>
+</html>

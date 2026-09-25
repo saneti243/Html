@@ -69,13 +69,13 @@
                 <form id="form-pago" onsubmit="procesarPago(event)">
                     <div class="form-group">
                         <label for="nombre-pago">NOMBRE COMPLETO</label>
-                        <input type="text" id="nombre-pago" required placeholder="Ej: Arturo Ignacio Cabello">
+                        <input type="text" id="nombre-pago" required placeholder="Ej: Arturo Ignacio Cabello" oninput="formatNombre(event)">
                     </div>
                     
                     <div class="form-row" style="display: flex; gap: 15px;">
                         <div class="form-group" style="flex: 1;">
                             <label for="rut-pago">RUT</label>
-                            <input type="text" id="rut-pago" required placeholder="12345678-9">
+                            <input type="text" id="rut-pago" required placeholder="12345678-9" maxlength="10" oninput="formatRut(event)">
                         </div>
                         <div class="form-group" style="flex: 1;">
                             <label for="dir-pago">DIRECCIÓN DE ENVÍO</label>
@@ -87,13 +87,13 @@
                     
                     <div class="form-group">
                         <label for="tarjeta-pago">NÚMERO DE TARJETA</label>
-                        <input type="text" id="tarjeta-pago" required placeholder="0000 0000 0000 0000" maxlength="19" pattern="\d{16}" title="Ingrese los 16 dígitos de su tarjeta sin espacios">
+                        <input type="text" id="tarjeta-pago" required placeholder="0000 0000 0000 0000" maxlength="19" pattern="\d{4} \d{4} \d{4} \d{4}" oninput="formatTarjeta(event)">
                     </div>
                     
                     <div class="form-row" style="display: flex; gap: 15px;">
                         <div class="form-group" style="flex: 1;">
                             <label for="vencimiento-pago">FECHA DE VENCIMIENTO</label>
-                            <input type="text" id="vencimiento-pago" required placeholder="MM/AA" maxlength="5">
+                            <input type="text" id="vencimiento-pago" required placeholder="MM/AA" maxlength="5" oninput="formatVencimiento(event)">
                         </div>
                         <div class="form-group" style="flex: 1;">
                             <label for="cvv-pago">CVV</label>
@@ -115,6 +115,37 @@
         document.addEventListener('DOMContentLoaded', () => {
             renderizarListaCarrito();
         });
+
+        function formatNombre(e) {
+            e.target.value = e.target.value.replace(/[0-9]/g, '');
+        }
+
+        function formatRut(e) {
+            let valor = e.target.value.replace(/[^0-9kK]/g, '').toUpperCase();
+            if (valor.length > 1) {
+                e.target.value = valor.slice(0, -1) + '-' + valor.slice(-1);
+            } else {
+                e.target.value = valor;
+            }
+        }
+
+        function formatTarjeta(e) {
+            let valor = e.target.value.replace(/\D/g, '');
+            let formateado = [];
+            for (let i = 0; i < valor.length; i += 4) {
+                formateado.push(valor.substring(i, i + 4));
+            }
+            e.target.value = formateado.join(' ');
+        }
+
+        function formatVencimiento(e) {
+            let valor = e.target.value.replace(/\D/g, '');
+            if (valor.length > 2) {
+                e.target.value = valor.slice(0, 2) + '/' + valor.slice(2, 4);
+            } else {
+                e.target.value = valor;
+            }
+        }
 
         function renderizarListaCarrito() {
             const listaCarrito = document.getElementById('lista-carrito');
@@ -158,6 +189,31 @@
             
             if (carrito.length === 0) {
                 alert("Ocurrió un error. El carrito está vacío.");
+                return;
+            }
+
+            const vencimiento = document.getElementById('vencimiento-pago').value;
+            const partes = vencimiento.split('/');
+            
+            if (partes.length !== 2) {
+                alert("Formato de fecha de vencimiento inválido. Use MM/AA.");
+                return;
+            }
+
+            const mes = parseInt(partes[0], 10);
+            const anio = parseInt(partes[1], 10);
+            
+            const fechaActual = new Date();
+            const mesActual = fechaActual.getMonth() + 1;
+            const anioActual = parseInt(fechaActual.getFullYear().toString().slice(2));
+
+            if (mes < 1 || mes > 12) {
+                alert("El mes de vencimiento debe estar entre 01 y 12.");
+                return;
+            }
+
+            if (anio < anioActual || (anio === anioActual && mes < mesActual)) {
+                alert("No se puede procesar el pago: La tarjeta está vencida.");
                 return;
             }
 

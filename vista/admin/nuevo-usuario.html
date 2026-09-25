@@ -3,68 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuevo Producto - Admin Panel</title>
+    <title>Producto - Admin Panel</title>
     <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
 
     <header style="background-color: #d4edda; border-bottom-color: #c3e6cb;">
-        <div class="logo">⚙️ ADMIN PANEL</div>
+        <div class="logo">⚙️ PANEL DE CONTROL</div>
         <nav>
             <ul>
-                <li><a href="home-admin.html">Dashboard</a></li>
+                <li><a href="home-admin.html" style="font-weight: bold;">Productos</a></li>
+                <li id="menu-usuarios"><a href="usuarios.html">Usuarios</a></li>
                 <li><a href="../../index.html">Ver Tienda</a></li>
             </ul>
         </nav>
         <div class="auth-links">
-            <a href="../../index.html" style="color: red;">Cerrar sesión</a>
+            <a href="#" onclick="cerrarSesion()" style="color: red;">Cerrar sesión</a>
         </div>
     </header>
 
     <main>
         <div class="form-container">
-            <h2 style="background-color: #c3e6cb; color: #155724;">Registrar Nuevo Producto</h2>
+            <h2 id="titulo-form" style="background-color: #c3e6cb; color: #155724;">Registrar Nuevo Producto</h2>
             
-            <form id="form-nuevo-producto">
+            <form id="form-producto" onsubmit="guardarProducto(event)">
                 <div class="form-group">
                     <label for="nombre-prod">NOMBRE DEL PRODUCTO</label>
-                    <input type="text" id="nombre-prod" name="nombre-prod" required>
+                    <input type="text" id="nombre-prod" required>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
+                <div class="form-row" style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
                         <label for="precio-prod">PRECIO ($)</label>
-                        <input type="number" id="precio-prod" name="precio-prod" min="0" required>
+                        <input type="number" id="precio-prod" min="0" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="flex: 1;">
                         <label for="categoria-prod">CATEGORÍA</label>
-                        <select id="categoria-prod" name="categoria-prod" required>
+                        <select id="categoria-prod" required>
                             <option value="">Seleccione...</option>
-                            <option value="Audio">Audio Personal</option>
-                            <option value="Calzado">Calzado / Streetwear</option>
-                            <option value="Videojuegos">Videojuegos Digitales</option>
-                            <option value="Mascotas">Mascotas / Hogar</option>
+                            <option value="Audio Personal">Audio Personal</option>
+                            <option value="Calzado / Streetwear">Calzado / Streetwear</option>
+                            <option value="Videojuegos Digitales">Videojuegos Digitales</option>
+                            <option value="Mascotas / Hogar">Mascotas / Hogar</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="desc-prod">DESCRIPCIÓN</label>
-                    <textarea id="desc-prod" name="desc-prod" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; resize: vertical;" required></textarea>
+                    <textarea id="desc-prod" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; resize: vertical;" required></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="img-prod">URL DE LA IMAGEN</label>
-                    <input type="url" id="img-prod" name="img-prod" placeholder="https://ejemplo.com/imagen.jpg">
+                    <label for="img-prod">URL O RUTA DE LA IMAGEN</label>
+                    <input type="text" id="img-prod" placeholder="Ej: https://... o images/foto.jpg">
                 </div>
 
                 <button type="submit" class="btn btn-add" style="background-color: #28a745;">GUARDAR PRODUCTO</button>
-                <a href="home-admin.html" class="btn" style="display: block; text-align: center; margin-top: 10px; background-color: #6c757d;">Volver al Dashboard</a>
+                <a href="home-admin.html" class="btn" style="display: block; text-align: center; margin-top: 10px; background-color: #6c757d;">Cancelar y Volver</a>
             </form>
         </div>
     </main>
 
-    <script src="../../js/validaciones.js"></script>
+    <script src="../../js/carrito.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rol = localStorage.getItem('rolUsuario');
+            if (rol === "vendedor") {
+                document.getElementById('menu-usuarios').style.display = 'none';
+            }
 
+            const idEdicion = localStorage.getItem('productoEnEdicion');
+            
+            if (idEdicion) {
+                document.getElementById('titulo-form').innerText = "Modificar Producto";
+                const prods = JSON.parse(localStorage.getItem('productosTienda')) || [];
+                const producto = prods.find(p => p.id === parseInt(idEdicion));
+                
+                if (producto) {
+                    document.getElementById('nombre-prod').value = producto.nombre;
+                    document.getElementById('precio-prod').value = producto.precio;
+                    document.getElementById('categoria-prod').value = producto.categoria;
+                    document.getElementById('desc-prod').value = producto.descripcion || "";
+                    document.getElementById('img-prod').value = producto.imagen || ""; 
+                }
+            }
+        });
+
+        function guardarProducto(e) {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('nombre-prod').value;
+            const precio = parseInt(document.getElementById('precio-prod').value);
+            const categoria = document.getElementById('categoria-prod').value;
+            const descripcion = document.getElementById('desc-prod').value;
+            const imagen = document.getElementById('img-prod').value; 
+            
+            let prods = JSON.parse(localStorage.getItem('productosTienda')) || [];
+            const idEdicion = localStorage.getItem('productoEnEdicion');
+
+            if (idEdicion) {
+                const index = prods.findIndex(p => p.id === parseInt(idEdicion));
+                if (index !== -1) {
+                    prods[index].nombre = nombre;
+                    prods[index].precio = precio;
+                    prods[index].categoria = categoria;
+                    prods[index].descripcion = descripcion;
+                    prods[index].imagen = imagen; 
+                }
+                alert("Producto modificado correctamente.");
+            } else {
+                const nuevoId = prods.length > 0 ? Math.max(...prods.map(p => p.id)) + 1 : 1;
+                prods.push({ id: nuevoId, nombre, precio, categoria, descripcion, imagen });
+                alert("Nuevo producto agregado correctamente.");
+            }
+
+            localStorage.setItem('productosTienda', JSON.stringify(prods));
+            localStorage.removeItem('productoEnEdicion'); 
+            window.location.href = "home-admin.html";
+        }
+    </script>
 </body>
 </html>

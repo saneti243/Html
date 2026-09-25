@@ -38,7 +38,6 @@ function renderizarProductos() {
         
         if (prod.imagen && prod.imagen.trim() !== "") {
             let rutaImg = prod.imagen.startsWith('http') ? prod.imagen : prefijoRuta + prod.imagen;
-            
             contenidoImagen = `<img src="${rutaImg}" alt="${prod.nombre}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 4px; margin-bottom: 15px; background-color: #f8f9fa;" onerror="this.src='https://via.placeholder.com/200?text=Error+de+Enlace'">`;
         }
 
@@ -80,23 +79,23 @@ function actualizarContadorCarrito() {
 function actualizarMenuSesion() {
     const contenedorAuth = document.querySelector('.auth-links');
     const usuario = localStorage.getItem('sesionIniciada');
+    const rol = localStorage.getItem('rolUsuario');
 
     if (usuario && contenedorAuth) {
-        const esAdmin = usuario.includes('admin');
         const rutaActual = window.location.pathname;
+        let enlacePanel = "";
         
-        let enlaceAdmin = "";
-        
-        if (esAdmin) {
+        if (rol === "administrador" || rol === "vendedor") {
             let rutaAdmin = "vista/admin/home-admin.html"; 
             if (rutaActual.includes('tienda/')) rutaAdmin = "../admin/home-admin.html";
             if (rutaActual.includes('admin/')) rutaAdmin = "home-admin.html";
 
-            enlaceAdmin = `<a href="${rutaAdmin}" style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; margin-right: 15px;">⚙️ Panel Admin</a>`;
+            const textoBoton = rol === "administrador" ? "⚙️ Panel Admin" : "📋 Panel Vendedor";
+            enlacePanel = `<a href="${rutaAdmin}" style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; margin-right: 15px;">${textoBoton}</a>`;
         }
 
         contenedorAuth.innerHTML = `
-            ${enlaceAdmin}
+            ${enlacePanel}
             <span style="font-weight: bold; color: #007bff;">👤 Hola, ${usuario}</span> | 
             <a href="#" onclick="cerrarSesion()" style="color: red; cursor: pointer; text-decoration: none; margin-left: 10px;">Cerrar sesión</a>
         `;
@@ -105,6 +104,7 @@ function actualizarMenuSesion() {
 
 window.cerrarSesion = function() {
     localStorage.removeItem('sesionIniciada');
+    localStorage.removeItem('rolUsuario');
     const rutaActual = window.location.pathname;
     if (rutaActual.includes('vista/')) {
         window.location.href = "../../index.html";
@@ -116,11 +116,11 @@ window.cerrarSesion = function() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const rutaActual = window.location.pathname;
-    const usuario = localStorage.getItem('sesionIniciada');
+    const rol = localStorage.getItem('rolUsuario');
     
     if (rutaActual.includes('admin/')) {
-        if (!usuario || !usuario.includes('admin')) {
-            alert('Acceso denegado. Esta sección es solo para administradores.');
+        if (rol !== "administrador" && rol !== "vendedor") {
+            alert('Acceso denegado. Esta sección es solo para personal autorizado.');
             window.location.href = "../../index.html";
             return;
         }

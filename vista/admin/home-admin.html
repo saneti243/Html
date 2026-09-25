@@ -17,10 +17,11 @@
 <body>
 
     <header style="background-color: #d4edda; border-bottom-color: #c3e6cb;">
-        <div class="logo">⚙️ ADMIN PANEL</div>
+        <div class="logo">⚙️ PANEL DE CONTROL</div>
         <nav>
             <ul>
-                <li><a href="home-admin.html" style="font-weight: bold;">Dashboard</a></li>
+                <li><a href="home-admin.html" style="font-weight: bold;">Productos</a></li>
+                <li id="menu-usuarios"><a href="usuarios.html">Usuarios</a></li>
                 <li><a href="../../index.html">Ver Tienda</a></li>
             </ul>
         </nav>
@@ -53,7 +54,13 @@
 
     <script src="../../js/carrito.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', cargarTablaProductos);
+        document.addEventListener('DOMContentLoaded', () => {
+            const rol = localStorage.getItem('rolUsuario');
+            if (rol === "vendedor") {
+                document.getElementById('menu-usuarios').style.display = 'none';
+            }
+            cargarTablaProductos();
+        });
 
         function cargarTablaProductos() {
             const tbody = document.getElementById('tabla-productos');

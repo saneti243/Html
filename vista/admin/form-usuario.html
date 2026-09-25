@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuario - Admin Panel</title>
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+    <header style="background-color: #d4edda; border-bottom-color: #c3e6cb;">
+        <div class="logo">⚙️ PANEL DE CONTROL</div>
+        <nav>
+            <ul>
+                <li><a href="home-admin.html">Productos</a></li>
+                <li><a href="usuarios.html">Usuarios</a></li>
+                <li><a href="../../index.html">Ver Tienda</a></li>
+            </ul>
+        </nav>
+        <div class="auth-links">
+            <a href="#" onclick="cerrarSesion()" style="color: red;">Cerrar sesión</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <h2 id="titulo-form" style="background-color: #cce5ff; color: #004085;">Registrar Nuevo Usuario</h2>
+            
+            <form id="form-usuario" onsubmit="guardarUsuario(event)">
+                
+                <div class="form-row" style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="run-usu">RUN</label>
+                        <input type="text" id="run-usu" required placeholder="Ej: 19011022K" maxlength="9" oninput="this.value = this.value.replace(/[^0-9kK]/g, '').toUpperCase()">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label for="rol-usu">ROL DEL SISTEMA</label>
+                        <select id="rol-usu" required>
+                            <option value="cliente">Cliente</option>
+                            <option value="vendedor">Vendedor</option>
+                            <option value="administrador">Administrador</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nombre-usu">NOMBRE COMPLETO</label>
+                    <input type="text" id="nombre-usu" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="correo-usu">CORREO</label>
+                    <input type="email" id="correo-usu" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="pass-usu">CONTRASEÑA</label>
+                    <input type="password" id="pass-usu" required minlength="4" maxlength="10">
+                </div>
+
+                <button type="submit" class="btn btn-add" style="background-color: #007bff;">GUARDAR USUARIO</button>
+                <a href="usuarios.html" class="btn" style="display: block; text-align: center; margin-top: 10px; background-color: #6c757d;">Cancelar y Volver</a>
+            </form>
+        </div>
+    </main>
+
+    <script src="../../js/carrito.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rol = localStorage.getItem('rolUsuario');
+            if (rol !== "administrador") {
+                window.location.href = "home-admin.html";
+                return;
+            }
+
+            const correoEdicion = localStorage.getItem('usuarioEnEdicion');
+            if (correoEdicion) {
+                document.getElementById('titulo-form').innerText = "Modificar Usuario";
+                const usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+                const usuario = usuarios.find(u => u.correo === correoEdicion);
+                
+                if (usuario) {
+                    document.getElementById('run-usu').value = usuario.run || "";
+                    document.getElementById('nombre-usu').value = usuario.nombre;
+                    document.getElementById('correo-usu').value = usuario.correo;
+                    document.getElementById('correo-usu').disabled = true; 
+                    document.getElementById('pass-usu').value = usuario.password;
+                    document.getElementById('rol-usu').value = usuario.rol;
+                }
+            }
+        });
+
+        function guardarUsuario(e) {
+            e.preventDefault();
+            
+            const run = document.getElementById('run-usu').value;
+            const nombre = document.getElementById('nombre-usu').value;
+            const correo = document.getElementById('correo-usu').value;
+            const password = document.getElementById('pass-usu').value;
+            const rol = document.getElementById('rol-usu').value;
+            
+            let usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+            const correoEdicion = localStorage.getItem('usuarioEnEdicion');
+
+            if (correoEdicion) {
+                const index = usuarios.findIndex(u => u.correo === correoEdicion);
+                if (index !== -1) {
+                    usuarios[index].run = run;
+                    usuarios[index].nombre = nombre;
+                    usuarios[index].password = password;
+                    usuarios[index].rol = rol;
+                }
+                alert("Usuario modificado correctamente.");
+            } else {
+                if (usuarios.find(u => u.correo === correo)) {
+                    alert("Error: Este correo ya está registrado en el sistema.");
+                    return;
+                }
+                usuarios.push({ run, nombre, correo, password, rol, region: "Asignada por Admin", comuna: "Asignada por Admin" });
+                alert("Nuevo usuario creado correctamente.");
+            }
+
+            localStorage.setItem('usuariosRegistrados', JSON.stringify(usuarios));
+            localStorage.removeItem('usuarioEnEdicion'); 
+            window.location.href = "usuarios.html";
+        }
+    </script>
+</body>
+</html>

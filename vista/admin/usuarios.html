@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios - Admin Panel</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        .admin-table th, .admin-table td { padding: 12px; border: 1px solid #ced4da; text-align: left; }
+        .admin-table th { background-color: #cce5ff; color: #004085; }
+        .btn-sm { padding: 6px 12px; font-size: 14px; margin-right: 5px; cursor: pointer; border: none; border-radius: 4px; color: white; text-decoration: none; }
+        .btn-edit { background-color: #007bff; }
+        .btn-delete { background-color: #dc3545; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: white; }
+        .badge-admin { background-color: #dc3545; }
+        .badge-vendedor { background-color: #28a745; }
+        .badge-cliente { background-color: #6c757d; }
+    </style>
+</head>
+<body>
+
+    <header style="background-color: #d4edda; border-bottom-color: #c3e6cb;">
+        <div class="logo">⚙️ PANEL DE CONTROL</div>
+        <nav>
+            <ul>
+                <li><a href="home-admin.html">Productos</a></li>
+                <li><a href="usuarios.html" style="font-weight: bold;">Usuarios</a></li>
+                <li><a href="../../index.html">Ver Tienda</a></li>
+            </ul>
+        </nav>
+        <div class="auth-links">
+            <a href="#" onclick="cerrarSesion()" style="color: red;">Cerrar sesión</a>
+        </div>
+    </header>
+
+    <main style="padding: 40px 20px;">
+        <div class="form-container" style="max-width: 1000px; padding: 20px;">
+            <h2 style="background-color: #cce5ff; color: #004085; margin-bottom: 20px;">Gestión de Usuarios</h2>
+            
+            <a href="form-usuario.html" class="btn btn-add" style="width: auto; padding: 10px 20px; background-color: #007bff;" onclick="limpiarEdicion()">+ Agregar Nuevo Usuario</a>
+            
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>RUN</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-usuarios">
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="../../js/carrito.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rol = localStorage.getItem('rolUsuario');
+            if (rol !== "administrador") {
+                alert("Acceso denegado. Solo los administradores pueden gestionar usuarios.");
+                window.location.href = "home-admin.html";
+                return;
+            }
+            cargarTablaUsuarios();
+        });
+
+        function cargarTablaUsuarios() {
+            const tbody = document.getElementById('tabla-usuarios');
+            tbody.innerHTML = '';
+            const usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+
+            if (usuarios.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay usuarios registrados.</td></tr>';
+                return;
+            }
+
+            usuarios.forEach(u => {
+                let badgeClass = "badge-cliente";
+                if (u.rol === "administrador") badgeClass = "badge-admin";
+                if (u.rol === "vendedor") badgeClass = "badge-vendedor";
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${u.run || 'N/A'}</td>
+                    <td>${u.nombre}</td>
+                    <td>${u.correo}</td>
+                    <td><span class="badge ${badgeClass}">${u.rol.toUpperCase()}</span></td>
+                    <td>
+                        <button class="btn-sm btn-edit" onclick="editarUsuario('${u.correo}')">Editar</button>
+                        <button class="btn-sm btn-delete" onclick="eliminarUsuario('${u.correo}')">Eliminar</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function eliminarUsuario(correo) {
+            if (correo === localStorage.getItem('sesionIniciada')) {
+                alert("No puedes eliminar tu propia cuenta mientras estás en sesión.");
+                return;
+            }
+            if (confirm("¿Estás seguro de eliminar este usuario?")) {
+                let usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+                usuarios = usuarios.filter(u => u.correo !== correo);
+                localStorage.setItem('usuariosRegistrados', JSON.stringify(usuarios));
+                cargarTablaUsuarios(); 
+            }
+        }
+
+        function editarUsuario(correo) {
+            localStorage.setItem('usuarioEnEdicion', correo);
+            window.location.href = "form-usuario.html";
+        }
+
+        function limpiarEdicion() {
+            localStorage.removeItem('usuarioEnEdicion');
+        }
+    </script>
+</body>
+</html>

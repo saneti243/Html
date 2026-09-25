@@ -7,53 +7,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const mostrarError = (id, mensaje) => {
                 const divError = document.getElementById(`error-${id}`);
-                if (mensaje) {
-                    divError.innerText = mensaje;
-                    divError.style.display = 'block';
-                    esValido = false;
-                } else {
-                    divError.style.display = 'none';
-                    divError.innerText = '';
+                if (divError) {
+                    divError.innerText = mensaje || '';
+                    divError.style.display = mensaje ? 'block' : 'none';
+                } else if (mensaje) {
+                    alert(mensaje);
                 }
+                if (mensaje) esValido = false;
             };
 
-            const nombre = document.getElementById('nombre').value.trim();
+            const nombre = document.getElementById('nombre') ? document.getElementById('nombre').value.trim() : '';
             if (nombre === '') mostrarError('nombre', '* El nombre completo es obligatorio.');
             else mostrarError('nombre', '');
 
-            const correo = document.getElementById('correo').value.trim();
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(correo)) mostrarError('correo', '* Ingrese un correo electrónico válido.');
-            else mostrarError('correo', '');
+            const correo = document.getElementById('correo') ? document.getElementById('correo').value.trim() : '';
+            const dominiosPermitidos = ['@duoc.cl', '@profesor.duoc.cl', '@gmail.com'];
+            const correoValido = dominiosPermitidos.some(dominio => correo.endsWith(dominio));
+            
+            if (!correoValido) {
+                mostrarError('correo', '* Solo se permiten correos @duoc.cl, @profesor.duoc.cl o @gmail.com');
+            } else {
+                mostrarError('correo', '');
+            }
 
-            const password = document.getElementById('password').value;
-            if (password.length < 6) mostrarError('password', '* La contraseña debe tener al menos 6 caracteres.');
-            else mostrarError('password', '');
+            const runInput = document.getElementById('run');
+            if (runInput) {
+                const run = runInput.value.trim().toUpperCase();
+                const runRegex = /^[0-9K]+$/;
+                if (run.length < 7 || run.length > 9 || !runRegex.test(run)) {
+                    mostrarError('run', '* RUN inválido. Use entre 7 y 9 caracteres, sin puntos ni guiones (Ej: 19011022K).');
+                } else {
+                    mostrarError('run', '');
+                }
+            }
 
-            const confirmPass = document.getElementById('confirm-password').value;
-            if (password !== confirmPass || confirmPass === '') mostrarError('confirm', '* Las contraseñas no coinciden.');
-            else mostrarError('confirm', '');
-
-            const region = document.getElementById('region').value;
-            if (region === '') mostrarError('region', '* Seleccione una región.');
-            else mostrarError('region', '');
-
-            const comuna = document.getElementById('comuna').value;
-            if (comuna === '') mostrarError('comuna', '* Seleccione una comuna.');
-            else mostrarError('comuna', '');
+            const password = document.getElementById('password') ? document.getElementById('password').value : '';
+            if (password.length < 4 || password.length > 10) {
+                mostrarError('password', '* La contraseña debe tener entre 4 y 10 caracteres.');
+            } else {
+                mostrarError('password', '');
+            }
 
             if (esValido) {
                 let usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
-                
-                const usuarioExiste = usuarios.find(u => u.correo === correo);
-                if (usuarioExiste) {
+                if (usuarios.find(u => u.correo === correo)) {
                     mostrarError('correo', '* Este correo ya está registrado.');
                     return;
                 }
 
                 usuarios.push({ nombre: nombre, correo: correo, password: password });
                 localStorage.setItem('usuariosRegistrados', JSON.stringify(usuarios));
-
                 alert("¡Registro exitoso! Redirigiendo al login...");
                 window.location.href = "login.html";
             }
@@ -68,42 +71,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const correo = document.getElementById('login-correo').value.trim();
             const password = document.getElementById('login-password').value;
-            
             const errorCorreo = document.getElementById('error-login-correo');
             const errorPass = document.getElementById('error-login-password');
 
-            if (correo === '') {
-                errorCorreo.innerText = '* Ingrese su correo.';
-                errorCorreo.style.display = 'block';
-                esValido = false;
-            } else {
-                errorCorreo.style.display = 'none';
-            }
+            const dominiosPermitidos = ['@duoc.cl', '@profesor.duoc.cl', '@gmail.com'];
+            const correoValido = dominiosPermitidos.some(dominio => correo.endsWith(dominio));
 
-            if (password === '') {
-                errorPass.innerText = '* Ingrese su contraseña.';
-                errorPass.style.display = 'block';
+            if (!correoValido) {
+                if (errorCorreo) {
+                    errorCorreo.innerText = '* Solo se permiten correos @duoc.cl, @profesor.duoc.cl o @gmail.com';
+                    errorCorreo.style.display = 'block';
+                } else alert('* Solo se permiten correos @duoc.cl, @profesor.duoc.cl o @gmail.com');
                 esValido = false;
-            } else {
-                errorPass.style.display = 'none';
-            }
+            } else if (errorCorreo) errorCorreo.style.display = 'none';
+
+            if (password.length < 4 || password.length > 10) {
+                if (errorPass) {
+                    errorPass.innerText = '* La contraseña debe tener entre 4 y 10 caracteres.';
+                    errorPass.style.display = 'block';
+                } else alert('* La contraseña debe tener entre 4 y 10 caracteres.');
+                esValido = false;
+            } else if (errorPass) errorPass.style.display = 'none';
 
             if (esValido) {
                 let usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
-                
                 const usuarioEncontrado = usuarios.find(u => u.correo === correo && u.password === password);
 
                 if (usuarioEncontrado) {
                     localStorage.setItem('sesionIniciada', correo);
-
-                    if (correo.includes("admin")) {
-                        window.location.href = "../admin/home-admin.html";
-                    } else {
-                        window.location.href = "../../index.html";
-                    }
+                    window.location.href = correo.includes("admin") ? "../admin/home-admin.html" : "../../index.html";
                 } else {
-                    errorCorreo.innerText = '* Correo o contraseña incorrectos. ¿Ya te registraste?';
-                    errorCorreo.style.display = 'block';
+                    if (errorCorreo) {
+                        errorCorreo.innerText = '* Correo o contraseña incorrectos.';
+                        errorCorreo.style.display = 'block';
+                    } else alert('* Correo o contraseña incorrectos.');
                 }
             }
         });

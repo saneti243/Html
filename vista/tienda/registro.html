@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Usuario</title>
+    <title>Registro - Tienda Online</title>
     <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
     <header>
-        <div class="logo">■ Tienda67</div>
+        <div class="logo">■ Site Name</div>
         <nav>
             <ul>
                 <li><a href="../../index.html">Home</a></li>
@@ -18,7 +18,13 @@
                 <li><a href="contacto.html">Contacto</a></li>
             </ul>
         </nav>
-        <div class="cart"><a href="carrito.html">🛒 Carrito (0)</a></div>
+        <div class="cart">
+            <a href="carrito.html">🛒 Cart (<span id="contador-carrito">0</span>)</a>
+        </div>
+        <div class="auth-links">
+            <a href="login.html">Iniciar sesión</a> | 
+            <a href="registro.html">Registrar usuario</a>
+        </div>
     </header>
 
     <main>
@@ -27,54 +33,26 @@
             <form id="form-registro">
                 <div class="form-group">
                     <label for="nombre">NOMBRE COMPLETO</label>
-                    <input type="text" id="nombre" name="nombre" autocomplete="name">
-                    <div id="error-nombre" class="error-msg"></div>
+                    <input type="text" id="nombre" required>
+                    <div id="error-nombre" style="color: red; display: none; font-size: 12px; margin-top: 5px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="run">RUN</label>
+                    <input type="text" id="run" required placeholder="Ej: 19011022K sin guion" maxlength="9" oninput="this.value = this.value.replace(/[^0-9kK]/g, '').toUpperCase()">
+                    <div id="error-run" style="color: red; display: none; font-size: 12px; margin-top: 5px;"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="correo">CORREO</label>
-                    <input type="email" id="correo" name="correo" autocomplete="email">
-                    <div id="error-correo" class="error-msg"></div>
+                    <input type="email" id="correo" required>
+                    <div id="error-correo" style="color: red; display: none; font-size: 12px; margin-top: 5px;"></div>
                 </div>
 
                 <div class="form-group">
                     <label for="password">CONTRASEÑA</label>
-                    <input type="password" id="password" name="password" autocomplete="new-password">
-                    <div id="error-password" class="error-msg"></div>
-                </div>
-
-                <div class="form-group">
-                    <label for="confirm-password">CONFIRMAR CONTRASEÑA</label>
-                    <input type="password" id="confirm-password" name="confirm-password">
-                    <div id="error-confirm" class="error-msg"></div>
-                </div>
-
-                <div class="form-group">
-                    <label for="telefono">TELÉFONO (opcional)</label>
-                    <input type="tel" id="telefono" name="telefono" autocomplete="tel">
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="region">- Seleccione la región -</label>
-                        <select id="region" name="region">
-                            <option value="">Seleccione...</option>
-                            <option value="RM">Región Metropolitana de Santiago</option>
-                            <option value="Araucania">Región de la Araucanía</option>
-                            <option value="Nuble">Región de Ñuble</option>
-                        </select>
-                        <div id="error-region" class="error-msg"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="comuna">- Seleccione la comuna -</label>
-                        <select id="comuna" name="comuna">
-                            <option value="">Seleccione...</option>
-                            <option value="Linares">Linares</option>
-                            <option value="Longavi">Longaví</option>
-                            <option value="Concepcion">Concepción</option>
-                        </select>
-                        <div id="error-comuna" class="error-msg"></div>
-                    </div>
+                    <input type="password" id="password" required>
+                    <div id="error-password" style="color: red; display: none; font-size: 12px; margin-top: 5px;"></div>
                 </div>
 
                 <button type="submit" class="btn btn-add">REGISTRAR</button>
@@ -83,9 +61,10 @@
     </main>
 
     <footer>
-        <p>&copy; 2026 Tienda67. Todos los derechos reservados.</p>
+        <p>&copy; 2026 Tienda Online. Todos los derechos reservados.</p>
     </footer>
 
     <script src="../../js/validaciones.js"></script>
+    <script src="../../js/carrito.js"></script>
 </body>
 </html>

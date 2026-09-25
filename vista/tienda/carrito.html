@@ -32,7 +32,7 @@
 <body>
 
     <header>
-        <div class="logo">■ Tienda67</div>
+        <div class="logo">■ Site Name</div>
         <nav>
             <ul>
                 <li><a href="../../index.html">Home</a></li>
@@ -43,7 +43,7 @@
             </ul>
         </nav>
         <div class="cart">
-            <a href="carrito.html">🛒 Cart</a>
+            <a href="carrito.html">🛒 Cart (<span id="contador-carrito">0</span>)</a>
         </div>
         <div class="auth-links">
             <a href="login.html">Iniciar sesión</a> | 
@@ -63,16 +63,63 @@
                 Total: $0
             </div>
             
-            <div style="text-align: right; margin-top: 20px;">
-                <button class="btn btn-add" style="width: auto; padding: 10px 30px;" onclick="alert('Funcionalidad de pago en construcción')">Proceder al pago</button>
+            <div id="checkout-section" style="display: none; margin-top: 30px; border-top: 2px solid var(--gray-bg); padding-top: 20px;">
+                <h3 style="margin-bottom: 20px; color: var(--primary-color);">Datos de Facturación y Envío</h3>
+                
+                <form id="form-pago" onsubmit="procesarPago(event)">
+                    <div class="form-group">
+                        <label for="nombre-pago">NOMBRE COMPLETO</label>
+                        <input type="text" id="nombre-pago" required placeholder="Ej: Arturo Ignacio Cabello">
+                    </div>
+                    
+                    <div class="form-row" style="display: flex; gap: 15px;">
+                        <div class="form-group" style="flex: 1;">
+                            <label for="rut-pago">RUT</label>
+                            <input type="text" id="rut-pago" required placeholder="12345678-9">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="dir-pago">DIRECCIÓN DE ENVÍO</label>
+                            <input type="text" id="dir-pago" required placeholder="Ej: Av. Providencia, Santiago">
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 20px 0 15px; color: var(--primary-color);">Método de Pago</h3>
+                    
+                    <div class="form-group">
+                        <label for="tarjeta-pago">NÚMERO DE TARJETA</label>
+                        <input type="text" id="tarjeta-pago" required placeholder="0000 0000 0000 0000" maxlength="19" pattern="\d{16}" title="Ingrese los 16 dígitos de su tarjeta sin espacios">
+                    </div>
+                    
+                    <div class="form-row" style="display: flex; gap: 15px;">
+                        <div class="form-group" style="flex: 1;">
+                            <label for="vencimiento-pago">FECHA DE VENCIMIENTO</label>
+                            <input type="text" id="vencimiento-pago" required placeholder="MM/AA" maxlength="5">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="cvv-pago">CVV</label>
+                            <input type="password" id="cvv-pago" required placeholder="123" maxlength="3" pattern="\d{3}">
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: right; margin-top: 20px;">
+                        <button type="submit" class="btn btn-add" style="width: auto; padding: 12px 30px; background-color: #28a745; font-size: 16px;">Confirmar y Pagar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </main>
 
+    <script src="../../js/carrito.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            renderizarListaCarrito();
+        });
+
+        function renderizarListaCarrito() {
             const listaCarrito = document.getElementById('lista-carrito');
             const contenedorTotal = document.getElementById('total-carrito');
+            const checkoutSection = document.getElementById('checkout-section');
             
             let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
             
@@ -80,7 +127,7 @@
                 listaCarrito.innerHTML = ''; 
                 let total = 0;
 
-                carrito.forEach((producto, index) => {
+                carrito.forEach((producto) => {
                     total += producto.precio;
                     
                     const div = document.createElement('div');
@@ -96,8 +143,30 @@
                 });
 
                 contenedorTotal.innerText = `Total: $${total.toLocaleString('es-CL')}`;
+                checkoutSection.style.display = 'block';
+            } else {
+                listaCarrito.innerHTML = '<p style="color: #6c757d;">Tu carrito está vacío actualmente.</p>';
+                contenedorTotal.innerText = 'Total: $0';
+                checkoutSection.style.display = 'none';
             }
-        });
+        }
+
+        function procesarPago(e) {
+            e.preventDefault();
+            
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            
+            if (carrito.length === 0) {
+                alert("Ocurrió un error. El carrito está vacío.");
+                return;
+            }
+
+            const nombre = document.getElementById('nombre-pago').value;
+            alert(`¡Pago autorizado!\n\nGracias por tu compra, ${nombre}. Hemos enviado los detalles del pedido y la boleta a tu correo electrónico registrado.`);
+            
+            localStorage.removeItem('carrito');
+            window.location.href = "../../index.html";
+        }
     </script>
 
 </body>

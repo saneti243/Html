@@ -43,6 +43,17 @@ document.addEventListener('DOMContentLoaded', () => {
             else mostrarError('comuna', '');
 
             if (esValido) {
+                let usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+                
+                const usuarioExiste = usuarios.find(u => u.correo === correo);
+                if (usuarioExiste) {
+                    mostrarError('correo', '* Este correo ya está registrado.');
+                    return;
+                }
+
+                usuarios.push({ nombre: nombre, correo: correo, password: password });
+                localStorage.setItem('usuariosRegistrados', JSON.stringify(usuarios));
+
                 alert("¡Registro exitoso! Redirigiendo al login...");
                 window.location.href = "login.html";
             }
@@ -78,12 +89,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (esValido) {
-                localStorage.setItem('sesionIniciada', correo);
+                let usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+                
+                const usuarioEncontrado = usuarios.find(u => u.correo === correo && u.password === password);
 
-                if (correo.includes("admin")) {
-                    window.location.href = "../admin/home-admin.html";
+                if (usuarioEncontrado) {
+                    localStorage.setItem('sesionIniciada', correo);
+
+                    if (correo.includes("admin")) {
+                        window.location.href = "../admin/home-admin.html";
+                    } else {
+                        window.location.href = "../../index.html";
+                    }
                 } else {
-                    window.location.href = "../../index.html";
+                    errorCorreo.innerText = '* Correo o contraseña incorrectos. ¿Ya te registraste?';
+                    errorCorreo.style.display = 'block';
                 }
             }
         });

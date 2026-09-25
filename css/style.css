@@ -102,12 +102,17 @@ nav a:hover {
 .hero-image-placeholder {
     flex: 1;
     height: 300px;
-    background-color: #ced4da;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px dashed #adb5bd;
-    color: #6c757d;
+}
+
+.hero-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 

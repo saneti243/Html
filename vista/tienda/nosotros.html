@@ -31,14 +31,17 @@
         .dev-photo {
             width: 100px;
             height: 100px;
-            background: #ced4da;
-            border-radius: 50%;
             margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6c757d;
+            border-radius: 50%;
+            overflow: hidden;
         }
+        .dev-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
     </style>
 </head>
 <body>
@@ -77,19 +80,19 @@
             
             <div class="desarrolladores">
                 <article class="dev-card">
-                    <div class="dev-photo">Foto</div>
+                    <div class="dev-photo"><img src="../../images/augusto.jpg" width="100" height="100" alt="Augusto Medina"></div>
                     <h3>Augusto Medina</h3>
                     <p style="font-size: 14px; color: #555; margin-top: 10px;">Especialista en Frontend y diseño de interfaces. Encargado de la estructura HTML y CSS.</p>
                 </article>
 
                 <article class="dev-card">
-                    <div class="dev-photo">Foto</div>
+                    <div class="dev-photo"><img src="../../images/arturo.jpg" width="100" height="100" alt="Arturo Cabello"></div>
                     <h3>Arturo Cabello</h3>
                     <p style="font-size: 14px; color: #555; margin-top: 10px;">Programador Javascript. Responsable de la lógica del carrito de compras y validaciones de formularios.</p>
                 </article>
 
                 <article class="dev-card">
-                    <div class="dev-photo">Foto</div>
+                    <div class="dev-photo"><img src="../../images/verity.jpg" width="100" height="100" alt="Verity"></div>
                     <h3>Verity</h3>
                     <p style="font-size: 14px; color: #555; margin-top: 10px;">Sabe de todo!</p>
                 </article>

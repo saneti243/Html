@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     const formRegistro = document.getElementById('form-registro');
     if (formRegistro) {
         formRegistro.addEventListener('submit', function(e) {
-            e.preventDefault(); 
+            e.preventDefault();
             let esValido = true;
 
             const mostrarError = (id, mensaje) => {
@@ -19,33 +18,21 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             const nombre = document.getElementById('nombre').value.trim();
-            if (nombre === '') {
-                mostrarError('nombre', '* El nombre completo es obligatorio.');
-            } else {
-                mostrarError('nombre', '');
-            }
+            if (nombre === '') mostrarError('nombre', '* El nombre completo es obligatorio.');
+            else mostrarError('nombre', '');
 
             const correo = document.getElementById('correo').value.trim();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(correo)) {
-                mostrarError('correo', '* Ingrese un correo electrónico válido.');
-            } else {
-                mostrarError('correo', '');
-            }
+            if (!emailRegex.test(correo)) mostrarError('correo', '* Ingrese un correo electrónico válido.');
+            else mostrarError('correo', '');
 
             const password = document.getElementById('password').value;
-            if (password.length < 6) {
-                mostrarError('password', '* La contraseña debe tener al menos 6 caracteres.');
-            } else {
-                mostrarError('password', '');
-            }
+            if (password.length < 6) mostrarError('password', '* La contraseña debe tener al menos 6 caracteres.');
+            else mostrarError('password', '');
 
             const confirmPass = document.getElementById('confirm-password').value;
-            if (password !== confirmPass || confirmPass === '') {
-                mostrarError('confirm', '* Las contraseñas no coinciden.');
-            } else {
-                mostrarError('confirm', '');
-            }
+            if (password !== confirmPass || confirmPass === '') mostrarError('confirm', '* Las contraseñas no coinciden.');
+            else mostrarError('confirm', '');
 
             const region = document.getElementById('region').value;
             if (region === '') mostrarError('region', '* Seleccione una región.');
@@ -91,6 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (esValido) {
+                localStorage.setItem('sesionIniciada', correo);
+
                 if (correo.includes("admin")) {
                     window.location.href = "../admin/home-admin.html";
                 } else {

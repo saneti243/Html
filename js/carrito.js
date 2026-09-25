@@ -1,4 +1,3 @@
-// 1. Arreglo de 4 productos a $67 pesos
 const productos = [
     { id: 1, nombre: "Audífonos In-Ear KZ EDX Pro", precio: 67, categoria: "Audio Personal" },
     { id: 2, nombre: "Zapatillas Retro Air Jordan 1", precio: 67, categoria: "Calzado / Streetwear" },
@@ -8,9 +7,9 @@ const productos = [
 
 function renderizarProductos() {
     const contenedor = document.getElementById('contenedor-productos');
-    if (!contenedor) return; 
+    if (!contenedor) return;
 
-    contenedor.innerHTML = ''; 
+    contenedor.innerHTML = '';
 
     productos.forEach(prod => {
         const article = document.createElement('article');
@@ -28,18 +27,13 @@ function renderizarProductos() {
 }
 
 window.agregarAlCarrito = function(productoId) {
-
     const idNumero = parseInt(productoId);
-
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-
     const productoSeleccionado = productos.find(p => p.id === idNumero);
     
     if (productoSeleccionado) {
         carrito.push(productoSeleccionado);
         localStorage.setItem('carrito', JSON.stringify(carrito));
-        
-        // Esta alerta te confirmará que el botón funcionó
         alert(`¡Éxito! Has añadido "${productoSeleccionado.nombre}" al carrito.`);
         actualizarContadorCarrito();
     } else {
@@ -55,7 +49,31 @@ function actualizarContadorCarrito() {
     }
 }
 
+function actualizarMenuSesion() {
+    const contenedorAuth = document.querySelector('.auth-links');
+    const usuario = localStorage.getItem('sesionIniciada');
+
+    if (usuario && contenedorAuth) {
+        contenedorAuth.innerHTML = `
+            <span style="font-weight: bold; color: #007bff;">👤 Hola, ${usuario}</span> | 
+            <a href="#" onclick="cerrarSesion()" style="color: red; cursor: pointer; text-decoration: none; margin-left: 10px;">Cerrar sesión</a>
+        `;
+    }
+}
+
+window.cerrarSesion = function() {
+    localStorage.removeItem('sesionIniciada');
+    const rutaActual = window.location.pathname;
+    if (rutaActual.includes('vista/')) {
+        window.location.href = "../../index.html";
+    } else {
+        window.location.href = "index.html";
+        window.location.reload();
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     renderizarProductos();
     actualizarContadorCarrito();
+    actualizarMenuSesion();
 });

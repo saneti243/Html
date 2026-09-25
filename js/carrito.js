@@ -2,12 +2,22 @@ let productos = JSON.parse(localStorage.getItem('productosTienda'));
 
 if (!productos || productos.length === 0) {
     productos = [
-        { id: 1, nombre: "Audífonos In-Ear KZ EDX Pro", precio: 67, categoria: "Audio Personal" },
-        { id: 2, nombre: "Zapatillas Retro Air Jordan 1", precio: 67, categoria: "Calzado / Streetwear" },
-        { id: 3, nombre: "Juego: Resident Evil Requiem", precio: 67, categoria: "Videojuegos Digitales" },
-        { id: 4, nombre: "Manta ultra suave para sobre sábanas", precio: 67, categoria: "Mascotas / Hogar" }
+        { id: 1, nombre: "Audífonos In-Ear KZ EDX Pro", precio: 67, categoria: "Audio Personal", imagen: "" },
+        { id: 2, nombre: "Zapatillas Retro Air Jordan 1", precio: 67, categoria: "Calzado / Streetwear", imagen: "images/retro 1.jpg" },
+        { id: 3, nombre: "Juego: Resident Evil Requiem", precio: 67, categoria: "Videojuegos Digitales", imagen: "" },
+        { id: 4, nombre: "Manta ultra suave para sobre sábanas", precio: 67, categoria: "Mascotas / Hogar", imagen: "" }
     ];
     localStorage.setItem('productosTienda', JSON.stringify(productos));
+} else {
+    let actualizados = false;
+    productos = productos.map(p => {
+        if (p.imagen === undefined) {
+            p.imagen = "";
+            actualizados = true;
+        }
+        return p;
+    });
+    if (actualizados) localStorage.setItem('productosTienda', JSON.stringify(productos));
 }
 
 function renderizarProductos() {
@@ -16,13 +26,24 @@ function renderizarProductos() {
 
     contenedor.innerHTML = '';
     const productosActuales = JSON.parse(localStorage.getItem('productosTienda')) || [];
+    
+    const rutaActual = window.location.pathname;
+    const prefijoRuta = rutaActual.includes('vista/') ? '../../' : '';
 
     productosActuales.forEach(prod => {
         const article = document.createElement('article');
         article.className = 'producto-card';
         
+        let contenidoImagen = `<div class="producto-img" style="height: 200px; display:flex; align-items:center; justify-content:center; background:#eee; color:#999; margin-bottom: 15px; border-radius:4px;">[ Sin Imagen ]</div>`;
+        
+        if (prod.imagen && prod.imagen.trim() !== "") {
+            let rutaImg = prod.imagen.startsWith('http') ? prod.imagen : prefijoRuta + prod.imagen;
+            
+            contenidoImagen = `<img src="${rutaImg}" alt="${prod.nombre}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 4px; margin-bottom: 15px; background-color: #f8f9fa;" onerror="this.src='https://via.placeholder.com/200?text=Error+de+Enlace'">`;
+        }
+
         article.innerHTML = `
-            <div class="producto-img">[ Imagen ]</div>
+            ${contenidoImagen}
             <h2>${prod.nombre}</h2>
             <p style="font-size: 12px; color: gray;">${prod.categoria}</p>
             <p class="precio">$${prod.precio.toLocaleString('es-CL')}</p>

@@ -47,6 +47,12 @@
                         </select>
                     </div>
                 </div>
+                
+                <!-- AQUI AGREGAMOS EL CAMPO DE LA IMAGEN DE VUELTA -->
+                <div class="form-group">
+                    <label for="img-prod">URL O RUTA DE LA IMAGEN</label>
+                    <input type="text" id="img-prod" placeholder="Ej: https://... o images/foto.jpg">
+                </div>
 
                 <button type="submit" class="btn btn-add" style="background-color: #28a745;">GUARDAR PRODUCTO</button>
                 <a href="home-admin.html" class="btn" style="display: block; text-align: center; margin-top: 10px; background-color: #6c757d;">Cancelar y Volver</a>
@@ -68,6 +74,7 @@
                     document.getElementById('nombre-prod').value = producto.nombre;
                     document.getElementById('precio-prod').value = producto.precio;
                     document.getElementById('categoria-prod').value = producto.categoria;
+                    document.getElementById('img-prod').value = producto.imagen || ""; // Carga la imagen si existe
                 }
             }
         });
@@ -78,6 +85,7 @@
             const nombre = document.getElementById('nombre-prod').value;
             const precio = parseInt(document.getElementById('precio-prod').value);
             const categoria = document.getElementById('categoria-prod').value;
+            const imagen = document.getElementById('img-prod').value; // Captura lo que escribas aquí
             
             let prods = JSON.parse(localStorage.getItem('productosTienda')) || [];
             const idEdicion = localStorage.getItem('productoEnEdicion');
@@ -88,11 +96,12 @@
                     prods[index].nombre = nombre;
                     prods[index].precio = precio;
                     prods[index].categoria = categoria;
+                    prods[index].imagen = imagen; // Guarda la imagen
                 }
                 alert("Producto modificado correctamente.");
             } else {
                 const nuevoId = prods.length > 0 ? Math.max(...prods.map(p => p.id)) + 1 : 1;
-                prods.push({ id: nuevoId, nombre, precio, categoria });
+                prods.push({ id: nuevoId, nombre, precio, categoria, imagen });
                 alert("Nuevo producto agregado correctamente.");
             }
 

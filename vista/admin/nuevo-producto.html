@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuevo Usuario - Admin Panel</title>
-    <!-- Enlace a la hoja de estilos externa -->
+    <title>Producto - Admin Panel</title>
     <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
@@ -18,49 +17,89 @@
             </ul>
         </nav>
         <div class="auth-links">
-            <a href="../../index.html" style="color: red;">Cerrar sesión</a>
+            <a href="#" onclick="cerrarSesion()" style="color: red;">Cerrar sesión</a>
         </div>
     </header>
 
     <main>
         <div class="form-container">
-            <h2 style="background-color: #c3e6cb; color: #155724;">Crear Nuevo Usuario</h2>
+            <h2 id="titulo-form" style="background-color: #c3e6cb; color: #155724;">Registrar Nuevo Producto</h2>
             
-            <form id="form-nuevo-usuario">
+            <form id="form-producto" onsubmit="guardarProducto(event)">
                 <div class="form-group">
-                    <label for="admin-nombre-user">NOMBRE COMPLETO</label>
-                    <input type="text" id="admin-nombre-user" name="nombre" required>
+                    <label for="nombre-prod">NOMBRE DEL PRODUCTO</label>
+                    <input type="text" id="nombre-prod" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="admin-correo-user">CORREO ELECTRÓNICO</label>
-                    <input type="email" id="admin-correo-user" name="correo" required>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="admin-rol-user">ROL DEL SISTEMA</label>
-                        <select id="admin-rol-user" name="rol" required>
-                            <option value="">Seleccione rol...</option>
-                            <option value="Cliente">Cliente</option>
-                            <option value="Administrador">Administrador</option>
-                            <option value="Vendedor">Vendedor</option>
+                <div class="form-row" style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="precio-prod">PRECIO ($)</label>
+                        <input type="number" id="precio-prod" min="0" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label for="categoria-prod">CATEGORÍA</label>
+                        <select id="categoria-prod" required>
+                            <option value="">Seleccione...</option>
+                            <option value="Audio Personal">Audio Personal</option>
+                            <option value="Calzado / Streetwear">Calzado / Streetwear</option>
+                            <option value="Videojuegos Digitales">Videojuegos Digitales</option>
+                            <option value="Mascotas / Hogar">Mascotas / Hogar</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="admin-pass-user">CONTRASEÑA TEMPORAL</label>
-                        <input type="password" id="admin-pass-user" name="password" required>
-                    </div>
                 </div>
 
-                <button type="submit" class="btn btn-add" style="background-color: #28a745;">REGISTRAR USUARIO</button>
-                <a href="home-admin.html" class="btn" style="display: block; text-align: center; margin-top: 10px; background-color: #6c757d;">Volver al Dashboard</a>
+                <button type="submit" class="btn btn-add" style="background-color: #28a745;">GUARDAR PRODUCTO</button>
+                <a href="home-admin.html" class="btn" style="display: block; text-align: center; margin-top: 10px; background-color: #6c757d;">Cancelar y Volver</a>
             </form>
         </div>
     </main>
 
-    <!-- Script para validaciones JS -->
-    <script src="../../js/validaciones.js"></script>
+    <script src="../../js/carrito.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const idEdicion = localStorage.getItem('productoEnEdicion');
+            
+            if (idEdicion) {
+                document.getElementById('titulo-form').innerText = "Modificar Producto";
+                const prods = JSON.parse(localStorage.getItem('productosTienda')) || [];
+                const producto = prods.find(p => p.id === parseInt(idEdicion));
+                
+                if (producto) {
+                    document.getElementById('nombre-prod').value = producto.nombre;
+                    document.getElementById('precio-prod').value = producto.precio;
+                    document.getElementById('categoria-prod').value = producto.categoria;
+                }
+            }
+        });
 
+        function guardarProducto(e) {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('nombre-prod').value;
+            const precio = parseInt(document.getElementById('precio-prod').value);
+            const categoria = document.getElementById('categoria-prod').value;
+            
+            let prods = JSON.parse(localStorage.getItem('productosTienda')) || [];
+            const idEdicion = localStorage.getItem('productoEnEdicion');
+
+            if (idEdicion) {
+                const index = prods.findIndex(p => p.id === parseInt(idEdicion));
+                if (index !== -1) {
+                    prods[index].nombre = nombre;
+                    prods[index].precio = precio;
+                    prods[index].categoria = categoria;
+                }
+                alert("Producto modificado correctamente.");
+            } else {
+                const nuevoId = prods.length > 0 ? Math.max(...prods.map(p => p.id)) + 1 : 1;
+                prods.push({ id: nuevoId, nombre, precio, categoria });
+                alert("Nuevo producto agregado correctamente.");
+            }
+
+            localStorage.setItem('productosTienda', JSON.stringify(prods));
+            localStorage.removeItem('productoEnEdicion'); 
+            window.location.href = "home-admin.html";
+        }
+    </script>
 </body>
 </html>

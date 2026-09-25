@@ -3,56 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración</title>
+    <title>Dashboard - Admin Panel</title>
     <link rel="stylesheet" href="../../css/style.css">
     <style>
-    
-        .admin-dashboard { display: flex; gap: 20px; padding: 40px; justify-content: center; }
-        .admin-module { background: #fff; padding: 30px; border-radius: 8px; border: 1px solid var(--border-color); flex: 1; max-width: 400px; text-align: center; }
-        .admin-module h3 { color: var(--primary-color); margin-bottom: 20px; }
-        .admin-menu { list-style: none; padding: 0; }
-        .admin-menu li { margin-bottom: 10px; }
-        .admin-menu a { display: block; padding: 10px; background-color: var(--gray-bg); color: var(--text-main); text-decoration: none; border-radius: 4px; transition: 0.3s; }
-        .admin-menu a:hover { background-color: var(--primary-color); color: #fff; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        .admin-table th, .admin-table td { padding: 12px; border: 1px solid #ced4da; text-align: left; }
+        .admin-table th { background-color: #c3e6cb; color: #155724; }
+        .btn-sm { padding: 6px 12px; font-size: 14px; margin-right: 5px; cursor: pointer; border: none; border-radius: 4px; color: white; text-decoration: none; }
+        .btn-edit { background-color: #007bff; }
+        .btn-delete { background-color: #dc3545; }
     </style>
 </head>
 <body>
+
     <header style="background-color: #d4edda; border-bottom-color: #c3e6cb;">
         <div class="logo">⚙️ ADMIN PANEL</div>
         <nav>
             <ul>
-                <li><a href="home-admin.html">Dashboard</a></li>
+                <li><a href="home-admin.html" style="font-weight: bold;">Dashboard</a></li>
                 <li><a href="../../index.html">Ver Tienda</a></li>
             </ul>
         </nav>
         <div class="auth-links">
-            <a href="../../index.html" style="color: red;">Cerrar sesión</a>
+            <a href="#" onclick="cerrarSesion()" style="color: red;">Cerrar sesión</a>
         </div>
     </header>
 
-    <main>
-        <h1 style="text-align: center; margin-top: 40px;">Bienvenido Administrador</h1>
-        
-        <section class="admin-dashboard">
-            <div class="admin-module">
-                <h3>Gestión de Productos</h3>
-                <ul class="admin-menu">
-                    <li><a href="nuevo-producto.html">Nuevo Producto</a></li>
-                    <li><a href="#">Editar Producto</a></li>
-                    <li><a href="#">Mostrar Producto</a></li>
-                </ul>
-            </div>
-
-            <div class="admin-module">
-                <h3>Gestión de Usuarios</h3>
-                <ul class="admin-menu">
-                    <li><a href="nuevo-usuario.html">Nuevo Usuario</a></li>
-                    <li><a href="#">Editar Usuario</a></li>
-                    <li><a href="#">Mostrar Usuario</a></li>
-                </ul>
-            </div>
-        </section>
+    <main style="padding: 40px 20px;">
+        <div class="form-container" style="max-width: 1000px; padding: 20px;">
+            <h2 style="background-color: #c3e6cb; color: #155724; margin-bottom: 20px;">Gestión de Productos</h2>
+            
+            <a href="nuevo-producto.html" class="btn btn-add" style="width: auto; padding: 10px 20px; background-color: #28a745;" onclick="limpiarEdicion()">+ Agregar Nuevo Producto</a>
+            
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre del Producto</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-productos">
+                </tbody>
+            </table>
+        </div>
     </main>
 
+    <script src="../../js/carrito.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', cargarTablaProductos);
+
+        function cargarTablaProductos() {
+            const tbody = document.getElementById('tabla-productos');
+            tbody.innerHTML = '';
+            const prods = JSON.parse(localStorage.getItem('productosTienda')) || [];
+
+            if (prods.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay productos registrados.</td></tr>';
+                return;
+            }
+
+            prods.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${p.id}</td>
+                    <td>${p.nombre}</td>
+                    <td>${p.categoria}</td>
+                    <td>$${p.precio.toLocaleString('es-CL')}</td>
+                    <td>
+                        <button class="btn-sm btn-edit" onclick="editarProducto(${p.id})">Editar</button>
+                        <button class="btn-sm btn-delete" onclick="eliminarProducto(${p.id})">Eliminar</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function eliminarProducto(id) {
+            if (confirm("¿Estás seguro de eliminar este producto?")) {
+                let prods = JSON.parse(localStorage.getItem('productosTienda')) || [];
+                prods = prods.filter(p => p.id !== id);
+                localStorage.setItem('productosTienda', JSON.stringify(prods));
+                cargarTablaProductos(); 
+            }
+        }
+
+        function editarProducto(id) {
+            localStorage.setItem('productoEnEdicion', id);
+            window.location.href = "nuevo-producto.html";
+        }
+
+        function limpiarEdicion() {
+            localStorage.removeItem('productoEnEdicion');
+        }
+    </script>
 </body>
 </html>

@@ -27,12 +27,24 @@
             font-weight: bold;
             margin-top: 20px;
         }
+        .btn-eliminar-item {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-eliminar-item:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">■ Tienda67</div>
+        <div class="logo">■ Site Name</div>
         <nav>
             <ul>
                 <li><a href="../../index.html">Home</a></li>
@@ -43,7 +55,7 @@
             </ul>
         </nav>
         <div class="cart">
-            <a href="carrito.html">🛒 Carrrito (<span id="contador-carrito">0</span>)</a>
+            <a href="carrito.html">🛒 Cart (<span id="contador-carrito">0</span>)</a>
         </div>
         <div class="auth-links">
             <a href="login.html">Iniciar sesión</a> | 
@@ -147,6 +159,14 @@
             }
         }
 
+        function eliminarDelCarrito(index) {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            carrito.splice(index, 1);
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            renderizarListaCarrito();
+            actualizarContadorCarrito();
+        }
+
         function renderizarListaCarrito() {
             const listaCarrito = document.getElementById('lista-carrito');
             const contenedorTotal = document.getElementById('total-carrito');
@@ -158,7 +178,7 @@
                 listaCarrito.innerHTML = ''; 
                 let total = 0;
 
-                carrito.forEach((producto) => {
+                carrito.forEach((producto, index) => {
                     total += producto.precio;
                     
                     const div = document.createElement('div');
@@ -168,7 +188,10 @@
                             <strong>${producto.nombre}</strong>
                             <p style="font-size: 14px; color: gray;">${producto.categoria || 'Sin categoría'}</p>
                         </div>
-                        <div>$${producto.precio.toLocaleString('es-CL')}</div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span>$${producto.precio.toLocaleString('es-CL')}</span>
+                            <button type="button" class="btn-eliminar-item" onclick="eliminarDelCarrito(${index})" title="Eliminar producto">X</button>
+                        </div>
                     `;
                     listaCarrito.appendChild(div);
                 });

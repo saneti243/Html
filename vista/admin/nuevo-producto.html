@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Usuario - Admin Panel</title>
+    <!-- Enlace a la hoja de estilos externa -->
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+    <header style="background-color: #d4edda; border-bottom-color: #c3e6cb;">
+        <div class="logo">⚙️ ADMIN PANEL</div>
+        <nav>
+            <ul>
+                <li><a href="home-admin.html">Dashboard</a></li>
+                <li><a href="../../index.html">Ver Tienda</a></li>
+            </ul>
+        </nav>
+        <div class="auth-links">
+            <a href="../../index.html" style="color: red;">Cerrar sesión</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <h2 style="background-color: #c3e6cb; color: #155724;">Crear Nuevo Usuario</h2>
+            
+            <form id="form-nuevo-usuario">
+                <div class="form-group">
+                    <label for="admin-nombre-user">NOMBRE COMPLETO</label>
+                    <input type="text" id="admin-nombre-user" name="nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="admin-correo-user">CORREO ELECTRÓNICO</label>
+                    <input type="email" id="admin-correo-user" name="correo" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="admin-rol-user">ROL DEL SISTEMA</label>
+                        <select id="admin-rol-user" name="rol" required>
+                            <option value="">Seleccione rol...</option>
+                            <option value="Cliente">Cliente</option>
+                            <option value="Administrador">Administrador</option>
+                            <option value="Vendedor">Vendedor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-pass-user">CONTRASEÑA TEMPORAL</label>
+                        <input type="password" id="admin-pass-user" name="password" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-add" style="background-color: #28a745;">REGISTRAR USUARIO</button>
+                <a href="home-admin.html" class="btn" style="display: block; text-align: center; margin-top: 10px; background-color: #6c757d;">Volver al Dashboard</a>
+            </form>
+        </div>
+    </main>
+
+    <!-- Script para validaciones JS -->
+    <script src="../../js/validaciones.js"></script>
+
+</body>
+</html>
